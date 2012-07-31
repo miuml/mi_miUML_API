@@ -1,0 +1,16 @@
+#! /bin/bash
+#
+# Scans through the current directory (set by reset.sql) and generates f.sql
+# which is a list of all database function (stored procedure) files to be loaded.
+#
+# Make this file executable and copy it in your path somewhere.
+# When reset.sql is loaded, it will invoke fmigen for each directory containing
+# functions to be loaded.  Note that only files with designated prefixes and the
+# .sql suffix are recognized as required functions.
+#
+
+echo "Generating f.sql"
+echo "SET client_min_messages=ERROR;" > f.sql
+ls create_*sql delete_*sql read_*sql write_*sql function_*sql type_*sql CL_*sql SV_*sql UI_*sql op_*sql derive_*sql method_*sql event_*sql 2> /dev/null | sed 's/^/\\i /' >> f.sql
+echo "SET client_min_messages=NOTICE;" >> f.sql 
+ 
