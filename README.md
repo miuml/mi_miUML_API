@@ -193,7 +193,7 @@ The metamodel API is simply a preview of what will come so that you can start dr
 compatible draw/text editors, model compilers, import/export schemas and utilities, and
 so many other potential facilities.  Have fun!
 
-- Leon Starr, San Francisco, April 2, 2013
+- Leon Starr, San Francisco, April 2, 2012
 leon_starr@modelint.com
 
 
