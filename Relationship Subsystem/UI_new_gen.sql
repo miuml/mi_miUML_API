@@ -1,15 +1,14 @@
 create or replace function mirel.UI_new_gen(
 	-- New or Existing
 	p_superclass		text,		-- Superclass
-	-- New
-	p_super_alias		text,	-- Required if Superclass does not exist
 	-- New or Existing
 	p_subclasses		text[],		-- A list of subclasses
-	-- New
-	p_sub_aliases		text[],		-- A list of subclasses
 	-- Existing
 	p_subsys			mi.name,	-- Subsystem
 	p_domain			mi.name,	-- Domain
+	-- New
+	p_super_alias		text default null,	-- Required if Superclass does not exist
+	p_sub_aliases		text[] default null,		-- A list of subclasses
 	p_rnum				integer default null	-- Rnum is assigned if not provided
 ) returns mi.nominal as 
 $$
@@ -29,12 +28,12 @@ $$
 --
 -- Example Usage where superclass exists already, and 2 of three subclasses are new:
 --
--- rnum = UI_new_generalization( 'Fruit', NULL, [ 'Apple', 'Pear', 'Melon' ], 
--- 				[ 'A', NULL, 'M' ], NULL, 'Main', 'Nutrition' )
+-- rnum = UI_new_generalization( 'Fruit', NULL, array[ 'Apple', 'Pear', 'Melon' ], 
+-- 				array[ 'A', NULL, 'M' ], NULL, 'Main', 'Nutrition' )
 -- Since the 'Pear' subclass already exists, no alias is provided.
 -- There must always be the same number of elements in the name and alias arrays.
 --
--- Copyright 2011, Model Integration, LLC
+-- Copyright 2011, 2012 Model Integration, LLC
 -- Developer: Leon Starr / leon_starr@modelint.com
 -- 
 -- This file is part of the miUML metamodel library.

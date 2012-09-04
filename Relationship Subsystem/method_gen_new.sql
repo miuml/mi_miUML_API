@@ -2,11 +2,11 @@ create or replace function mirel.method_gen_new(
 	-- New or Existing
 	p_superclass		superclass.class%type,	-- Superclass
 	-- New
-	p_super_alias		miclass.class.alias%type,	-- Alias required if new class
+	p_super_alias		miclass.class.alias%type,	-- May be NULL, alias required if new class
 	-- New or Existing
-	p_subclasses		text[],					-- All validated for type 
+	p_subclasses		text[],		-- All validated for type 
 	-- New
-	p_sub_aliases		text[],					-- Aliases required for new classes
+	p_sub_aliases		text[],		-- May be NULL, Aliases required for new classes
 	-- Existing
 	p_subsys			midom.subsystem.name%type,				-- Subsystem
 	p_domain			generalization.domain%type,				-- Domain
@@ -26,7 +26,7 @@ $$
 -- other Identifiers.
 --
 --
--- Copyright 2011, Model Integration, LLC
+-- Copyright 2011, 2012 Model Integration, LLC
 -- Developer: Leon Starr / leon_starr@modelint.com
 -- 
 -- This file is part of the miUML metamodel library.
@@ -51,10 +51,16 @@ begin
 	perform method_superclass_new(
 		p_superclass, p_super_alias, p_subsys, my_rnum, p_domain
 	);
-	-- The constraint is complete now with Generalization refering to an existing
+	-- The constraint is complete now with Generalization referring to an existing
 	-- instance of Superclass
 
 	-- Create subclasses
+    if p_sub_aliases is NULL then raise exception
+        'UI: Aliases must be provided for new subclasses.';
+    end if;
+    if array_length( p_sub_aliases, 1 ) != array_length( p_subclasses, 1 ) then
+        raise exception 'UI: An alias must be provided for each new subclass.';
+    end if;
 	for s in 1 .. array_upper( p_subclasses, 1 )
 	loop
 		perform method_subclass_new(

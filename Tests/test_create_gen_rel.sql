@@ -1,22 +1,31 @@
 -- Existing Superclass, new Subclasses
 
-select UI_new_modeled_domain( 'Gas', 'GAS' );
+select UI_new_domain( 'Gas', 'GAS' );
 
 -- name, alias, subsys, domain, [cnum], [id_name], [id_type]
 select UI_new_class( 'Connector', 'CONN', 'Main', 'Gas' );
 
 begin;
-set constraints all deferred;
+set constraints R103_Generalization__requires__Superclass deferred;
 select UI_new_gen(
-	'Connector', NULL, array[ 'Valve', 'Pump' ], array[ 'V', 'P' ], 'Main', 'Gas'
+	p_superclass:='Connector',
+    p_subclasses:=array[ 'Valve', 'Pump' ],
+    p_sub_aliases:=array[ 'V', 'P' ],
+    p_subsys:='Main',
+    p_domain:='Gas'
 );
 commit;
 
 -- All new classes
 begin;
-set constraints all deferred;
+set constraints R103_Generalization__requires__Superclass deferred;
 select UI_new_gen(
-	'Tank', 'T', array[ 'Cylindrical', 'Spherical' ], array[ 'CYL', 'SPH' ], 'Main', 'Gas'
+	p_superclass:='Tank',
+    p_super_alias:='T',
+    p_subclasses:=array[ 'Cylindrical', 'Spherical' ],
+    p_sub_aliases:=array[ 'CYL', 'SPH' ],
+    p_subsys:='Main',
+    p_domain:='Gas'
 );
 commit;
 

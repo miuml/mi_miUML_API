@@ -280,7 +280,8 @@ alter table superclass add
 	on update cascade on delete cascade deferrable;
 
 -- R103
-alter table generalization add
+alter table generalization add constraint
+    R103_Generalization__requires__Superclass
 	foreign key( rnum, domain, superclass ) references superclass( rnum, domain, class ) 
 	on update cascade on delete cascade deferrable;
 

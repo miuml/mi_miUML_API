@@ -3,6 +3,9 @@
 \set VERBOSITY default
 \pset border 2
 
+--\i test_create_gen_rel.sql
+--\i q_gen_rel.sql
+
 -- \i test_lifecycle.sql
 -- \i q_lifecycle.sql
 
